@@ -95,7 +95,7 @@ private:
 Data::Data() {}
 
 void Data::load(const string& filename) {
-    ifstream file(filename);
+    ifstream file(filename); // Loads data from file
     if (file.is_open()) {
         string line;
         while (getline(file, line)) {
@@ -110,6 +110,8 @@ void Data::load(const string& filename) {
         for (string value : row) { cout << value << " "; }
         cout << "\n";
     }
+
+    cout << "\n";
 }
 
 void Data::convert() {
@@ -137,23 +139,23 @@ void Data::convert() {
 }
 
 void Data::insert() {
-    size_t rows = dataProducts.size();
-    size_t cols = dataProducts[0].size();
+    // Ask the user for the new row as a comma-separated string
+    string newRowString;
+    cout << "Enter the new row (comma-separated values): ";
+    cin >> newRowString;
+    getline(cin, newRowString);
 
-    cout << "Enter new product ID, Name, Price, Category: ";
-    string input;
-    getline(cin, input);
-    vector<string> newProduct;
-    istringstream iss(input);
-    string column;
-    while (getline(iss, column, ',')) { newProduct.push_back(column); }
-
-    if (newProduct.size() != cols) {
-        cerr << "Number of columns does not match the existing data." << "\n";
-        return;
+    // Split the input string into individual values
+    vector<string> newRow;
+    istringstream iss(newRowString);
+    string value;
+    while (getline(iss, value, ',')) {
+        newRow.push_back(value);
     }
 
-    dataProducts.push_back(newProduct);
+    // Insert the new row into the dataProducts
+    dataProducts.push_back(newRow);
+
     printData();
 }
 
